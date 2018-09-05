@@ -1,15 +1,15 @@
 const base = require("@snooful/settings-base");
+const sqlite = require("sqlite");
 
 /**
  * Manages settings.
  */
 class SQLiteSettingsManager extends base.BaseSettingsManager {
 	/**
-	 * @param {SQLiteDatabase} database The database to store settings in.
+	 * @param {string} databasePath The path to the database to store settings in.
 	 */
-	constructor(database) {
-		this.database = database;
-		this.init();
+	constructor(databasePath) {
+		super();
 
 		/**
 		 * The settings cache.
@@ -17,6 +17,15 @@ class SQLiteSettingsManager extends base.BaseSettingsManager {
 		this.settings = {};
 
 		this.setStatement = null;
+
+		// Open the database and init
+		sqlite.open(databasePath).then(database => {
+			base.debug("opened settings database");
+
+			this.database = database;
+			this.init();
+		});
+
 	}
 
 	/**
