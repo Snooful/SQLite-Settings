@@ -1,0 +1,22 @@
+{
+	"name": "@snooful/sqlite-settings",
+	"version": "1.0.0",
+	"description": "Stores Snooful settings in a SQLite database, organized by subreddit/group ID.",
+	"main": "settings.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Snooful/SQLite-Storage.git"
+	},
+	"author": "haykam821",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Snooful/SQLite-Storage/issues"
+	},
+	"homepage": "https://github.com/Snooful/SQLite-Storage#readme",
+	"dependencies": {
+		"@snooful/settings-base": "^1.0.1"
+	}
+}
