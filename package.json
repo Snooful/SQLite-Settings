@@ -4,7 +4,8 @@
 	"description": "Stores Snooful settings in a SQLite database, organized by subreddit/group ID.",
 	"main": "settings.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "eslint \"./**/*.js\""
 	},
 	"repository": {
 		"type": "git",
