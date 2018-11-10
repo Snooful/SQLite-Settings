@@ -52,7 +52,7 @@ class SQLiteSettingsManager extends base.SettingsManager {
 
 	async update(subreddit) {
 		base.debug(`updating settings database for r/${subreddit}`);
-		return await this.setStatement.run(subreddit, JSON.stringify(this.settings[subreddit]));
+		return this.setStatement.run(subreddit, JSON.stringify(this.settings[subreddit]));
 	}
 }
 module.exports.SettingsManager = SQLiteSettingsManager;

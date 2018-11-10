@@ -19,5 +19,14 @@
 	"dependencies": {
 		"@snooful/settings-base": "^1.0.2",
 		"sqlite": "^3.0.0"
+	},
+	"devDependencies": {
+		"eslint": "^5.9.0",
+		"eslint-config-haykam": "^1.5.1",
+		"eslint-plugin-extra-rules": "0.0.0-development",
+		"eslint-plugin-html": "^4.0.6",
+		"eslint-plugin-json": "^1.2.1",
+		"eslint-plugin-markdown": "^1.0.0-rc.0",
+		"eslint-plugin-unicorn": "^6.0.1"
 	}
 }
