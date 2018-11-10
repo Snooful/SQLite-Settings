@@ -4,7 +4,7 @@ const sqlite = require("sqlite");
 /**
  * Manages settings.
  */
-class SQLiteSettingsManager extends base.BaseSettingsManager {
+class SQLiteSettingsManager extends base.SettingsManager {
 	/**
 	 * @param {string} databasePath The path to the database to store settings in.
 	 */
@@ -55,5 +55,6 @@ class SQLiteSettingsManager extends base.BaseSettingsManager {
 		return await this.setStatement.run(subreddit, JSON.stringify(this.settings[subreddit]));
 	}
 }
+module.exports.SettingsManager = SQLiteSettingsManager;
 
-module.exports = SettingsManager;
+module.exports.extension = ".sqlite3";

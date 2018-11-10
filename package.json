@@ -17,7 +17,7 @@
 	},
 	"homepage": "https://github.com/Snooful/SQLite-Storage#readme",
 	"dependencies": {
-		"@snooful/settings-base": "^1.0.1",
+		"@snooful/settings-base": "^1.0.2",
 		"sqlite": "^3.0.0"
 	}
 }
