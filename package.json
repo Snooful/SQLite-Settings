@@ -1,6 +1,6 @@
 {
 	"name": "@snooful/sqlite-settings",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Stores Snooful settings in a SQLite database, organized by subreddit/group ID.",
 	"main": "settings.js",
 	"scripts": {
