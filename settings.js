@@ -32,25 +32,31 @@ class SQLiteSettingsManager extends base.SettingsManager {
 	 * Initializes the database.
 	 */
 	async init() {
-		await this.database.run("CREATE TABLE IF NOT EXISTS settings (subreddit VARCHAR(20) PRIMARY KEY, settings TEXT)").then(() => {
-			base.debug("ensured the settings table exists");
-		});
-
-		const rows = this.database.all("SELECT CAST(subreddit as TEXT) as subreddit, settings FROM settings").then(rows => {
-			base.debug("got rows of settings");
-			rows.forEach(row => {
-				base.debug("caching settings for r/%s", row.subreddit);
-				this.settings[row.subreddit] = JSON.parse(row.settings);
+		try {
+			await this.database.run("CREATE TABLE IF NOT EXISTS settings (subreddit VARCHAR(20) PRIMARY KEY, settings TEXT)").then(() => {
+				base.debug("ensured the settings table exists");
 			});
-		});
 
-		this.database.prepare("INSERT OR REPLACE INTO settings VALUES(?, ?)").then(statement => {
-			base.debug("prepared the set statement");
-			this.setStatement = statement;
-		});
+			this.database.all("SELECT CAST(subreddit as TEXT) as subreddit, settings FROM settings").then(rows => {
+				base.debug("got rows of settings");
+				rows.forEach(row => {
+					base.debug("caching settings for r/%s", row.subreddit);
+					this.settings[row.subreddit] = JSON.parse(row.settings);
+				});
+			});
+
+			this.database.prepare("INSERT OR REPLACE INTO settings VALUES(?, ?)").then(statement => {
+				base.debug("prepared the set statement");
+				this.setStatement = statement;
+			});
+
+			return true;
+		} catch (error) {
+			return false;
+		}
 	}
 
-	async update(subreddit) {
+	update(subreddit) {
 		base.debug(`updating settings database for r/${subreddit}`);
 		return this.setStatement.run(subreddit, JSON.stringify(this.settings[subreddit]));
 	}
