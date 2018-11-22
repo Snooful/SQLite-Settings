@@ -11,11 +11,6 @@ class SQLiteSettingsManager extends base.SettingsManager {
 	constructor(databasePath) {
 		super();
 
-		/**
-		 * The settings cache.
-		 */
-		this.settings = {};
-
 		this.setStatement = null;
 
 		// Open the database and init
