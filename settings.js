@@ -45,15 +45,15 @@ class SQLiteSettingsManager extends base.SettingsManager {
 	 * @param {Database} database The database to cache settings from.
 	 */
 	async cacheSettings(database) {
-		const rows = await database.all("SELECT CAST(subreddit as TEXT) as subreddit, settings FROM settings");
+		const rows = await database.all("SELECT CAST(subreddit as TEXT) as namespace, settings FROM settings");
 		base.debug("got rows of settings");
 
 		for (const row of rows) {
 			try {
-				this.settings[row.subreddit] = JSON.parse(row.settings);
-				base.debug("cached settings for r/%s", row.subreddit);
+				this.settings[row.namespace] = JSON.parse(row.settings);
+				base.debug("cached settings for the '%s' namespace", row.namespace);
 			} catch (error) {
-				base.debug("could not cache settings for r/%s: %o", row.subreddit, error);
+				base.debug("could not cache settings for the '%s' namespace: %o", row.namespace, error);
 			}
 		}
 	}
@@ -76,13 +76,13 @@ class SQLiteSettingsManager extends base.SettingsManager {
 	}
 
 
-	update(subreddit) {
+	update(namespace) {
 		if (this.insertStatement === null) {
 			throw new Error("The database has not been initialized yet");
 		}
 
-		base.debug(`updating settings database for r/${subreddit}`);
-		return this.insertStatement.run(subreddit, JSON.stringify(this.settings[subreddit]));
+		base.debug("updating settings database for the '%s' namespace", namespace);
+		return this.insertStatement.run(namespace, JSON.stringify(this.settings[namespace]));
 	}
 }
 module.exports.SettingsManager = SQLiteSettingsManager;
