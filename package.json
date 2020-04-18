@@ -1,6 +1,6 @@
 {
 	"name": "@snooful/sqlite-settings",
-	"version": "1.0.2",
+	"version": "2.0.0",
 	"description": "Stores settings in a SQLite database, organized by subreddit/group ID.",
 	"main": "./src/index.js",
 	"scripts": {
