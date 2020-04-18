@@ -18,7 +18,8 @@
 	},
 	"homepage": "https://github.com/Snooful/SQLite-Settings#readme",
 	"dependencies": {
-		"@snooful/settings-base": "^1.0.2",
+		"@snooful/settings-base": "^2.0.0",
+		"debug": "^3.1.0",
 		"sqlite": "^4.0.7",
 		"sqlite3": "^4.1.1"
 	},

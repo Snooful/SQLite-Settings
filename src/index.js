@@ -1,12 +1,14 @@
-const base = require("@snooful/settings-base");
+const SettingsManager = require("@snooful/settings-base");
 
 const sqlite = require("sqlite");
 const { Database } = require("sqlite3");
 
+const log = require("debug")("snooful:sqlite-settings");
+
 /**
  * Manages settings through a SQLite database.
  */
-class SQLiteSettingsManager extends base.SettingsManager {
+class SQLiteSettingsManager extends SettingsManager {
 	/**
 	 * @param {string} databasePath The path to the database to store settings in.
 	 */
@@ -26,7 +28,7 @@ class SQLiteSettingsManager extends base.SettingsManager {
 			driver: Database,
 			filename: databasePath,
 		});
-		base.debug("opened settings database");
+		log("opened settings database");
 
 		return database;
 	}
@@ -37,7 +39,7 @@ class SQLiteSettingsManager extends base.SettingsManager {
 	 */
 	async createTable(database) {
 		await database.run("CREATE TABLE IF NOT EXISTS settings (subreddit VARCHAR(20) PRIMARY KEY, settings TEXT)");
-		base.debug("ensured the settings table exists");
+		log("ensured the settings table exists");
 	}
 
 	/**
@@ -46,28 +48,28 @@ class SQLiteSettingsManager extends base.SettingsManager {
 	 */
 	async cacheSettings(database) {
 		const rows = await database.all("SELECT CAST(subreddit as TEXT) as namespace, settings FROM settings");
-		base.debug("got rows of settings");
+		log("got rows of settings");
 
 		for (const row of rows) {
 			try {
 				this.settings[row.namespace] = JSON.parse(row.settings);
-				base.debug("cached settings for the '%s' namespace", row.namespace);
+				log("cached settings for the '%s' namespace", row.namespace);
 			} catch (error) {
-				base.debug("could not cache settings for the '%s' namespace: %o", row.namespace, error);
+				log("could not cache settings for the '%s' namespace: %o", row.namespace, error);
 			}
 		}
 	}
 
 	async prepareInsertStatement(database) {
 		const insertStatement = await database.prepare("INSERT OR REPLACE INTO settings VALUES(?, ?)");
-		base.debug("prepared the insert statement");
+		log("prepared the insert statement");
 		return insertStatement;
 	}
 
 	/**
 	 * Initializes the database.
 	 */
-	async init() {
+	async initialize() {
 		const database = await this.open(this.databasePath);
 		await this.createTable(database);
 
@@ -81,10 +83,11 @@ class SQLiteSettingsManager extends base.SettingsManager {
 			throw new Error("The database has not been initialized yet");
 		}
 
-		base.debug("updating settings database for the '%s' namespace", namespace);
+		log("updating settings database for the '%s' namespace", namespace);
 		return this.insertStatement.run(namespace, JSON.stringify(this.settings[namespace]));
 	}
 }
-module.exports.SettingsManager = SQLiteSettingsManager;
 
-module.exports.extension = ".sqlite3";
+SQLiteSettingsManager.extension = ".sqlite3";
+
+module.exports = SQLiteSettingsManager;
